@@ -110,26 +110,23 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="hidden md:flex md:space-x-10">
-                <a
-                  href="/bounties"
-                  className="font-medium text-gray-500 hover:text-gray-900"
-                >
-                  Explore Bounties
-                </a>
+                <Link href="/bounties">
+                  <a className="font-medium text-gray-500 hover:text-gray-900">
+                    Explore Bounties
+                  </a>
+                </Link>
                 {session?.user?.hunterId ? (
-                  <a
-                    href="/hunter-dashboard"
-                    className="font-medium text-gray-500 hover:text-gray-900"
-                  >
-                    Hunter Dashboard
-                  </a>
+                  <Link href="/hunter-dashboard">
+                    <a className="font-medium text-gray-500 hover:text-gray-900">
+                      Hunter Dashboard
+                    </a>
+                  </Link>
                 ) : (
-                  <a
-                    href="/hunter-signup"
-                    className="font-medium text-gray-500 hover:text-gray-900"
-                  >
-                    Hunt with Magicboard
-                  </a>
+                  <Link href="/hunter-signup">
+                    <a className="font-medium text-gray-500 hover:text-gray-900">
+                      Hunt with Magicboard
+                    </a>
+                  </Link>
                 )}
               </div>
               <div className="hidden md:absolute md:inset-y-0 md:right-0 md:flex md:items-center md:justify-end">

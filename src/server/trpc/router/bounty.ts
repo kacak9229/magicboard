@@ -19,13 +19,9 @@ export const bountyRouter = router({
 
       let whereClause: any = { paymentStatus: PaymentStatus.PAID };
 
-      console.log("Where clause", whereClause);
-
       if (category) {
         whereClause = { ...whereClause, categoryId: category };
       }
-
-      console.log("Where clause after", whereClause);
 
       const bounties = await prisma.bounty.findMany({
         take: limit + 1,

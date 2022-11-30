@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function Tabs({ mission }: Props) {
-  let categories = [
+  const categories = [
     {
       id: 1,
       tabName: "Activity",

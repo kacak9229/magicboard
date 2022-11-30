@@ -36,7 +36,6 @@ export default function Bounty() {
     if (acceptedBounty.status) {
       Router.push("/poster-dashboard");
     }
-    console.log("Success");
   };
 
   if (isError) {
@@ -72,7 +71,7 @@ export default function Bounty() {
                   {mission?.bounty?.title}
                   <span className="pl-1">
                     <StatusBadge
-                      status={mission?.missionStatus!}
+                      status={mission?.missionStatus}
                       statusType="mission"
                     />
                   </span>
@@ -82,7 +81,7 @@ export default function Bounty() {
                   <time dateTime="2020-08-25">
                     {" "}
                     <a href="#" className="text-gray-900">
-                      {formatDate(mission?.bounty?.dateline!)}
+                      {formatDate(mission?.bounty?.dateline)}
                     </a>
                   </time>
                 </p>

@@ -61,7 +61,7 @@ export default function Timeline({
 
   const utils = trpc.useContext();
 
-  let { uploadToS3 } = useS3Upload();
+  const { uploadToS3 } = useS3Upload();
 
   const uploadFile = trpc.hunter.uploadFile.useMutation({
     async onSuccess() {
@@ -75,10 +75,10 @@ export default function Timeline({
 
   const handleFileChange = async (e: any) => {
     setProcessing(true);
-    let file = e.target.files[0];
+    const file = e.target.files[0];
 
     try {
-      let { url } = await uploadToS3(file);
+      const { url } = await uploadToS3(file);
 
       const response = await uploadFile.mutateAsync({
         missionId: mission.id,

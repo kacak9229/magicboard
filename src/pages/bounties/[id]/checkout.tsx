@@ -16,7 +16,8 @@ export default function Checkout() {
   const bountyQuery = trpc.bounty?.byId.useQuery({ id });
   const { data: bounty } = bountyQuery;
 
-  const totalPrice = bounty?.price! * PROCESSING_FEE + bounty?.price!;
+  const totalPrice =
+    Number(bounty?.price) * PROCESSING_FEE + Number(bounty?.price);
   return (
     <Layout>
       <div className="bg-white">
@@ -63,7 +64,9 @@ export default function Checkout() {
               </div>
               <div className="flex justify-between">
                 <dt>Processing Fee</dt>
-                <dd className="text-gray-900">${bounty?.price! * 0.03}</dd>
+                <dd className="text-gray-900">
+                  ${Number(bounty?.price) * 0.03}
+                </dd>
               </div>
 
               <div className="flex justify-between border-t border-gray-200 pt-6 text-gray-900">

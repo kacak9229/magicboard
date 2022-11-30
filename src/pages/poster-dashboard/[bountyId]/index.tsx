@@ -42,7 +42,7 @@ export default function Bounty() {
                   <time dateTime="2020-08-25">
                     {" "}
                     <span className="inline-flex items-center rounded-full bg-indigo-100 px-3 py-0.5 text-sm font-medium text-indigo-800">
-                      {formatDate(bounty?.dateline!)}
+                      {formatDate(bounty?.dateline)}
                     </span>
                   </time>
                 </p>
@@ -53,7 +53,10 @@ export default function Bounty() {
               className="mx-auto space-y-16 sm:grid sm:grid-cols-2 sm:gap-16 sm:space-y-0 lg:max-w-5xl lg:grid-cols-3"
             >
               {bounty?.hunters.map((hunter) => (
-                <Link href={`${bounty.id}/hunter/${hunter?.id}`}>
+                <Link
+                  href={`${bounty.id}/hunter/${hunter?.id}`}
+                  key={bounty.id}
+                >
                   <a>
                     <li key={hunter?.id}>
                       <div className="space-y-6">

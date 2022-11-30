@@ -65,9 +65,6 @@ export default function NewBounty() {
     setProcessing(true);
     type Input = inferProcedureInput<AppRouter["bounty"]["add"]>;
 
-    console.log(data.maxHunters);
-    console.log(typeof data.maxHunters);
-
     const input: Input = {
       title: data.title,
       dateline: startDate,

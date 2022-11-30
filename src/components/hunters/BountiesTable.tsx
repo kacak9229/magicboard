@@ -3,16 +3,6 @@ import { formatDate } from "../../utils/date";
 import Pagination from "../main/Pagination";
 import StatusBadge from "../StatusBadge";
 
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  // More people...
-];
-
 interface Props {
   bountiesQuery?: any;
 }
@@ -20,7 +10,6 @@ interface Props {
 export default function BountiesTable({ bountiesQuery }: Props) {
   const pages = bountiesQuery.data?.pages;
 
-  console.log("Im in pages right now");
   return (
     <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <div className="px-4 sm:px-6 lg:px-8">
@@ -104,7 +93,7 @@ export default function BountiesTable({ bountiesQuery }: Props) {
                               {mission?.bounty?.category.title}
                             </td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                              {formatDate(mission?.bounty?.dateline!)}
+                              {formatDate(mission?.bounty?.dateline)}
                             </td>
                             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                               {100 / mission?.bounty?.maxHunters}%

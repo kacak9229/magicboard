@@ -176,7 +176,7 @@ export default function HunterSignup({ getSessionv1 }: any) {
                       className="inline-flex items-center rounded-full bg-gray-900 p-1 pr-2 text-white hover:text-gray-200 sm:text-base lg:text-sm xl:text-base"
                     >
                       <span className="rounded-full bg-indigo-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white">
-                        We're hiring
+                        We are hiring
                       </span>
                       <span className="ml-4 text-sm">
                         Visit our careers page

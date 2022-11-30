@@ -29,7 +29,7 @@ export default function Skeleton() {
         <div className="mt-20 h-screen">
           <div className="grid grid-flow-col grid-rows-3 gap-4">
             {twentySkeletonCards.map((skel) => (
-              <SkeletonCard />
+              <SkeletonCard key={skel} />
             ))}
           </div>
         </div>

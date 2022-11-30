@@ -1,6 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-const stripe = require("stripe")(
-  "sk_test_51M3zzSE3SyiVmkyuiRZCbeYGNPfCTJqNnGFsetLwYBw9R2CJJ1X2BhlduEwyfPlrcrtYbxiIyYOQpiRXw564AA2U00Ng31lJqW"
+import Stripe from "stripe";
+
+const stripe = new Stripe(
+  "sk_test_51M3zzSE3SyiVmkyuiRZCbeYGNPfCTJqNnGFsetLwYBw9R2CJJ1X2BhlduEwyfPlrcrtYbxiIyYOQpiRXw564AA2U00Ng31lJqW",
+  {
+    apiVersion: "2022-08-01",
+  }
 );
 
 const PROCESSING_FEE = 0.03;
@@ -10,7 +15,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { bounty } = JSON.parse(req.body);
-  const totalPrice = (bounty.price * PROCESSING_FEE) + bounty.price;
+  const totalPrice = bounty.price * PROCESSING_FEE + bounty.price;
 
   const lineItems = [];
   lineItems.push({

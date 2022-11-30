@@ -143,7 +143,7 @@ export default function Bounty() {
                         aria-hidden="true"
                       />
                     </dt>
-                    <dd>{formatDate(bounty?.dateline!)}</dd>
+                    <dd>{formatDate(bounty?.dateline)}</dd>
                   </div>
                 </div>
               </div>

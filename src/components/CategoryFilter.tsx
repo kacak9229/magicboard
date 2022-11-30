@@ -17,8 +17,6 @@ export default function CategoryFilter({
   categoryFilter,
   categories,
 }: Props) {
-  console.log("Category Filter", categoryFilter);
-
   const [currentCategory, setCurrentCategory] = useState("");
 
   return (
@@ -58,7 +56,7 @@ export default function CategoryFilter({
               )}
             </Menu.Item>
             {categories?.map((category: any) => (
-              <Menu.Item>
+              <Menu.Item key={category.id}>
                 {({ active }) => (
                   <a
                     onClick={() => {

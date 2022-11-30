@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import { Bounty } from "@prisma/client";
+import Link from "next/link";
 import BountyCard from "./BountyCard";
 import CategoryFilter from "./CategoryFilter";
 import Pagination from "./main/Pagination";
@@ -25,13 +27,12 @@ export default function BountyList({
         {homePage ? (
           <div className="flex items-center justify-between space-x-4">
             <h2 className="text-2xl font-medium text-gray-900">Hot Bounties</h2>
-            <a
-              href="/bounties"
-              className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              View all
-              <span aria-hidden="true"> &rarr;</span>
-            </a>
+            <Link href="/bounties">
+              <a className="whitespace-nowrap text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                View all
+                <span aria-hidden="true"> &rarr;</span>
+              </a>
+            </Link>
           </div>
         ) : (
           <CategoryFilter
@@ -42,11 +43,11 @@ export default function BountyList({
         )}
         <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
           {pages?.map((page: any, index: any) => (
-            <>
+            <Fragment key={page}>
               {page.bounties.map((bounty: any) => (
                 <BountyCard key={bounty.id} bounty={bounty} />
               ))}
-            </>
+            </Fragment>
           ))}
         </div>
         <div className="mt-10">

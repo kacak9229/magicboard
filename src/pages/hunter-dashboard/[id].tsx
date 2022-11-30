@@ -76,13 +76,13 @@ export default function Bounty() {
                   {mission?.bounty?.title}
                   <span className="pl-1">
                     <StatusBadge
-                      status={mission?.missionStatus!}
+                      status={mission?.missionStatus}
                       statusType="mission"
                     />
                   </span>
                 </h1>{" "}
                 <p className="text-sm font-medium text-gray-500">
-                  Dateline - {formatDate(mission?.bounty?.dateline!)}
+                  Dateline - {formatDate(mission?.bounty?.dateline)}
                 </p>
               </div>
             </div>
