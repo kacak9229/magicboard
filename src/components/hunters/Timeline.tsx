@@ -1,8 +1,15 @@
+import { useState } from "react";
+import { useS3Upload } from "next-s3-upload";
 import {
   CheckIcon,
   HandThumbUpIcon,
   UserIcon,
+  DocumentArrowUpIcon,
 } from "@heroicons/react/20/solid";
+import Modal from "../main/Modal";
+import { trpc } from "../../utils/trpc";
+import { formatDate } from "../../utils/date";
+import SpinningCircle from "../SpinningCircle";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -23,41 +30,76 @@ const timeline = [
     date: "Sep 20",
     datetime: "2020-09-20",
   },
-  {
-    id: 2,
-    type: eventTypes.advanced,
-    content: "Advanced to phone screening by",
-    target: "Bethany Blake",
-    date: "Sep 22",
-    datetime: "2020-09-22",
-  },
-  {
-    id: 3,
-    type: eventTypes.completed,
-    content: "Completed phone screening with",
-    target: "Martha Gardner",
-    date: "Sep 28",
-    datetime: "2020-09-28",
-  },
-  {
-    id: 4,
-    type: eventTypes.advanced,
-    content: "Advanced to interview by",
-    target: "Bethany Blake",
-    date: "Sep 30",
-    datetime: "2020-09-30",
-  },
-  {
-    id: 5,
-    type: eventTypes.completed,
-    content: "Completed interview with",
-    target: "Katherine Snyder",
-    date: "Oct 4",
-    datetime: "2020-10-04",
-  },
 ];
 
-export default function Timeline() {
+interface Props {
+  setShowAlert?: any;
+  processing?: any;
+  setProcessing?: any;
+  hunterId?: any;
+  mission: any;
+  hunterName?: string;
+  isHunter?: boolean;
+  isPoster?: boolean;
+  files?: any;
+  onAcceptBounty?: () => void;
+}
+
+export default function Timeline({
+  setShowAlert,
+  processing,
+  setProcessing,
+  hunterId,
+  mission,
+  hunterName,
+  isHunter,
+  isPoster,
+  files,
+  onAcceptBounty,
+}: Props) {
+  const [modal, setModal] = useState(false);
+
+  const utils = trpc.useContext();
+
+  let { uploadToS3 } = useS3Upload();
+
+  const uploadFile = trpc.hunter.uploadFile.useMutation({
+    async onSuccess() {
+      await utils.hunter.byFiles.invalidate();
+      await utils.hunter.byMission.invalidate({
+        hunterId: hunterId,
+        bountyId: mission?.bounty.id,
+      });
+    },
+  });
+
+  const handleFileChange = async (e: any) => {
+    setProcessing(true);
+    let file = e.target.files[0];
+
+    try {
+      let { url } = await uploadToS3(file);
+
+      const response = await uploadFile.mutateAsync({
+        missionId: mission.id,
+        hunterId: hunterId,
+        fileName: file.name,
+        fileUrl: url,
+      });
+
+      if (response?.status) {
+        setShowAlert(true);
+        setProcessing(false);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 5000);
+      }
+    } catch (err) {
+      setProcessing(false);
+      console.log(err);
+    }
+  };
+
   return (
     <section
       aria-labelledby="timeline-title"
@@ -68,13 +110,25 @@ export default function Timeline() {
           Timeline
         </h2>
 
+        {/* Modal */}
+        {modal && !isHunter ? (
+          <Modal
+            title={`Accept this ${hunterName} work?`}
+            description={`Once you have accepted this work, other works from other hunters will be declined.`}
+            onCancel={() => setModal(false)}
+            onAccept={onAcceptBounty}
+          />
+        ) : (
+          <></>
+        )}
+
         {/* Activity Feed */}
         <div className="mt-6 flow-root">
           <ul role="list" className="-mb-8">
-            {timeline.map((item, itemIdx) => (
-              <li key={item.id}>
+            {files?.map((file: any, fileIdx: number) => (
+              <li key={file.id}>
                 <div className="relative pb-8">
-                  {itemIdx !== timeline.length - 1 ? (
+                  {fileIdx !== files.length - 1 ? (
                     <span
                       className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
                       aria-hidden="true"
@@ -84,27 +138,24 @@ export default function Timeline() {
                     <div>
                       <span
                         className={classNames(
-                          item.type.bgColorClass,
                           "flex h-8 w-8 items-center justify-center rounded-full ring-8 ring-white"
                         )}
                       >
-                        <item.type.icon
-                          className="h-5 w-5 text-white"
-                          aria-hidden="true"
-                        />
+                        <DocumentArrowUpIcon />
                       </span>
                     </div>
                     <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
                       <div>
-                        <p className="text-sm text-gray-500">
-                          {item.content}{" "}
-                          <a href="#" className="font-medium text-gray-900">
-                            {item.target}
-                          </a>
-                        </p>
+                        <a
+                          href={file.fileUrl}
+                          className="border-b-2 border-indigo-600 text-indigo-600"
+                        >
+                          {file.fileName}
+                        </a>
                       </div>
                       <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                        <time dateTime={item.datetime}>{item.date}</time>
+                        {/* <time dateTime={file.datetime}>{file.date}</time> */}
+                        {formatDate(file.createdAt)}
                       </div>
                     </div>
                   </div>
@@ -113,13 +164,46 @@ export default function Timeline() {
             ))}
           </ul>
         </div>
+
         <div className="justify-stretch mt-6 flex flex-col">
-          <button
-            type="button"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Upload
-          </button>
+          {" "}
+          {isPoster ? (
+            <button
+              onClick={() => setModal(true)}
+              type="button"
+              className="inline-flex items-center justify-center rounded-md border border-transparent  bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700 shadow-sm  hover:bg-indigo-200 focus:outline-none focus:ring-2
+            focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              Accept Bounty
+            </button>
+          ) : isHunter ? (
+            <label htmlFor="file-upload">
+              <span
+                className="inline-flex w-full cursor-pointer items-center justify-center rounded-md border  border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-700  shadow-sm hover:bg-indigo-200 focus:outline-none
+            focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                {processing ? (
+                  <>
+                    <SpinningCircle />
+                    <span>Uploading ....</span>
+                  </>
+                ) : (
+                  <span>Upload Bounty</span>
+                )}
+              </span>
+
+              <input
+                id="file-upload"
+                onChange={handleFileChange}
+                name="file-upload"
+                type="file"
+                className="sr-only"
+                disabled={processing}
+              />
+            </label>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </section>

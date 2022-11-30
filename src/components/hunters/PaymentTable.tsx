@@ -32,9 +32,7 @@ export default function PaymentTable() {
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
             <h1 className="text-xl font-semibold text-gray-900">Earnings</h1>
-            <p className="mt-2 text-sm text-gray-700">
-              A list of all the bounties that you are hunting
-            </p>
+            <p className="mt-2 text-sm text-gray-700">Your yearly earnings</p>
           </div>
         </div>
         <div className="mt-8 flex flex-col">

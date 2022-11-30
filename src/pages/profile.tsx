@@ -26,7 +26,7 @@ export default function Profile() {
                   htmlFor="first-name"
                   className="text-blue-gray-900 block text-sm font-medium"
                 >
-                  First name
+                  Name
                 </label>
                 <input
                   type="text"

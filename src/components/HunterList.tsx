@@ -1,70 +1,73 @@
-import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/20/solid";
+interface Props {
+  hunters: any;
+}
 
-const people = [
-  {
-    name: "Jane Cooper",
-    title: "Software Engineer",
-    role: "Elite Rank",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1531384441138-2736e62e0919?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cG90cmFpdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    name: "Marcelo",
-    title: "Software Engineer",
-    role: "Master Rank",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
-  },
-  {
-    name: "Jake",
-    title: "Software Engineer",
-    role: "Novice",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cG90cmFpdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-  },
-  // More people...
-];
-
-export default function HunterList() {
+function List({ hunters }: any) {
   return (
     <ul
       role="list"
       className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3"
     >
-      {people.map((person) => (
+      {hunters.map((hunter: any) => (
         <li
-          key={person.email}
+          key={hunter?.id}
           className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow"
         >
           <div className="flex flex-1 flex-col p-8">
             <img
               className="mx-auto h-32 w-32 flex-shrink-0 rounded-full"
-              src={person.imageUrl}
+              src={hunter?.user.image}
               alt=""
             />
             <h3 className="mt-6 text-sm font-medium text-gray-900">
-              {person.name}
+              {hunter?.user.name}
             </h3>
             <dl className="mt-1 flex flex-grow flex-col justify-between">
               <dt className="sr-only">Title</dt>
-              <dd className="text-sm text-gray-500">{person.title}</dd>
+              <dd className="text-sm text-gray-500">{hunter?.title}</dd>
               <dt className="sr-only">Role</dt>
               <dd className="mt-3">
                 <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-                  {person.role}
+                  {hunter?.occupation}
                 </span>
               </dd>
             </dl>
           </div>
-          <div></div>
         </li>
       ))}
     </ul>
+  );
+}
+
+export default function HunterList({ hunters }: Props) {
+  return (
+    <>
+      {hunters.length > 0 ? (
+        <List hunters={hunters} />
+      ) : (
+        <div className="text-center">
+          <svg
+            className="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 48 48"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M34 40h10v-4a6 6 0 00-10.712-3.714M34 40H14m20 0v-4a9.971 9.971 0 00-.712-3.714M14 40H4v-4a6 6 0 0110.713-3.714M14 40v-4c0-1.313.253-2.566.713-3.714m0 0A10.003 10.003 0 0124 26c4.21 0 7.813 2.602 9.288 6.286M30 14a6 6 0 11-12 0 6 6 0 0112 0zm12 6a4 4 0 11-8 0 4 4 0 018 0zm-28 0a4 4 0 11-8 0 4 4 0 018 0z"
+            />
+          </svg>
+          <h2 className="mt-2 text-lg font-medium text-gray-900">
+            List of bounty hunters
+          </h2>
+          <p className="mt-1 text-sm text-gray-500">
+            Currently there are no bounty hunters
+          </p>
+        </div>
+      )}
+    </>
   );
 }

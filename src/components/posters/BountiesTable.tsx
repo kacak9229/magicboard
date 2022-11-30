@@ -1,4 +1,7 @@
+import { BountyStatus, PaymentStatus } from "@prisma/client";
 import Link from "next/link";
+import { formatDate } from "../../utils/date";
+import StatusBadge from "../StatusBadge";
 
 const people = [
   {
@@ -43,7 +46,8 @@ const bounties = [
   },
 ];
 
-export default function BountiesTable() {
+export default function BountiesTable({ bountiesQuery }: any) {
+  const pages = bountiesQuery.data?.pages;
   return (
     <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <div className="px-4 sm:px-6 lg:px-8">
@@ -88,17 +92,12 @@ export default function BountiesTable() {
                       >
                         Dateline
                       </th>
+
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
-                        Percentage to win
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Hunter Count
+                        Number of Hunters working
                       </th>
                       <th
                         scope="col"
@@ -106,40 +105,60 @@ export default function BountiesTable() {
                       >
                         Status
                       </th>
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      ></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {bounties.map((bounty) => (
-                      <tr key={bounty.id}>
-                        <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {bounty.title}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {bounty.price}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {bounty.category}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {bounty.dateline}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {bounty.percentageToWin}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {bounty.hunterCount}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {bounty.status}
-                        </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          <Link href={`/poster-dashboard/${bounty.id}`}>
-                            <a className="text-indigo-600 hover:text-indigo-900">
-                              View<span className="sr-only"></span>
-                            </a>
-                          </Link>
-                        </td>
-                      </tr>
+                    {pages?.map((page: any, index: any) => (
+                      <>
+                        {page.bounties.map((bounty: any) => (
+                          <tr key={bounty.id}>
+                            <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                              {bounty.title}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                              ${bounty.price}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                              {bounty.category.title}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                              {formatDate(bounty.dateline)}
+                            </td>
+
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                              {bounty.hunters.length}
+                            </td>
+                            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                              <StatusBadge
+                                status={bounty.bountyStatus}
+                                statusType="bounty"
+                              />
+                            </td>
+                            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                              {bounty.paymentStatus ===
+                                PaymentStatus.NOT_PAID &&
+                              bounty.bountyStatus === BountyStatus.DRAFT ? (
+                                <Link href={`/bounties/${bounty.id}/checkout`}>
+                                  <a className="text-indigo-600 hover:text-indigo-900">
+                                    Make a payment
+                                    <span className="sr-only"></span>
+                                  </a>
+                                </Link>
+                              ) : (
+                                <Link href={`/poster-dashboard/${bounty.id}`}>
+                                  <a className="text-indigo-600 hover:text-indigo-900">
+                                    View<span className="sr-only"></span>
+                                  </a>
+                                </Link>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </>
                     ))}
                   </tbody>
                 </table>

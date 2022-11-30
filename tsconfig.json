@@ -22,7 +22,9 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs",
-    "tailwind.config.js"
+    "tailwind.config.js",
+    "src/pages/api/auth/[...nextauth].js",
+    "src/pages/api/s3-upload.js"
   ],
   "exclude": ["node_modules"]
 }

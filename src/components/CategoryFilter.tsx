@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { useState, Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
@@ -6,14 +6,26 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const categoryFilters = ["Development", "Design", "Writing"];
+interface Props {
+  setCategoryFilter?: any;
+  categoryFilter?: string;
+  categories: any;
+}
 
-export default function CategoryFilter() {
+export default function CategoryFilter({
+  setCategoryFilter,
+  categoryFilter,
+  categories,
+}: Props) {
+  console.log("Category Filter", categoryFilter);
+
+  const [currentCategory, setCurrentCategory] = useState("");
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
-          Category
+          {currentCategory ? currentCategory : "All"}
           <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
         </Menu.Button>
       </div>
@@ -29,17 +41,36 @@ export default function CategoryFilter() {
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {categoryFilters.map((filter: string) => (
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  onClick={() => {
+                    setCategoryFilter("");
+                    setCurrentCategory("");
+                  }}
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block px-4 py-2 text-sm"
+                  )}
+                >
+                  All
+                </a>
+              )}
+            </Menu.Item>
+            {categories?.map((category: any) => (
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    href="#"
+                    onClick={() => {
+                      setCategoryFilter(category.id);
+                      setCurrentCategory(category.title);
+                    }}
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm"
                     )}
                   >
-                    {filter}
+                    {category.title}
                   </a>
                 )}
               </Menu.Item>

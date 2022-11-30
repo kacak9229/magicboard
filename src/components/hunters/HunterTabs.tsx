@@ -6,7 +6,11 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Tabs() {
+interface Props {
+  mission?: any;
+}
+
+export default function Tabs({ mission }: Props) {
   let categories = [
     {
       id: 1,
@@ -16,7 +20,7 @@ export default function Tabs() {
     {
       id: 2,
       tabName: "Requirement",
-      tabContent: <Requirement />,
+      tabContent: <Requirement requirement={mission?.bounty?.requirement} />,
     },
   ];
 

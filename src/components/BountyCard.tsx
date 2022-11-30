@@ -1,4 +1,6 @@
-interface Product {
+import Link from "next/link";
+
+interface Bounty {
   // Will move to a type.ts page
   id: number;
   name: string;
@@ -10,16 +12,16 @@ interface Product {
 }
 
 interface Props {
-  product: Product;
+  bounty: any;
 }
 
-export default function BountyCard({ product }: Props) {
+export default function BountyCard({ bounty }: Props) {
   return (
-    <div key={product.id} className="group relative">
+    <div key={bounty.id} className="group relative">
       <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg bg-gray-100">
         <img
-          src={product.imageSrc}
-          alt={product.imageAlt}
+          src={bounty.coverPhoto}
+          alt={bounty.imageAlt}
           className="object-cover object-center"
         />
         <div
@@ -33,14 +35,16 @@ export default function BountyCard({ product }: Props) {
       </div>
       <div className="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900">
         <h3>
-          <a href="/bounties/1">
-            <span aria-hidden="true" className="absolute inset-0" />
-            {product.name}
-          </a>
+          <Link href={`/bounties/${bounty.id}`}>
+            <a>
+              <span aria-hidden="true" className="absolute inset-0" />
+              {bounty.title}
+            </a>
+          </Link>
         </h3>
-        <p>{product.price}</p>
+        <p>${bounty.price}</p>
       </div>
-      <p className="mt-1 text-sm text-gray-500">{product.category}</p>
+      <p className="mt-1 text-sm text-gray-500">{bounty.category.title}</p>
     </div>
   );
 }

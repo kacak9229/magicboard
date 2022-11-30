@@ -1,7 +1,24 @@
+import { useState } from "react";
+import { trpc } from "../../utils/trpc";
 import BountyList from "../../components/BountyList";
 import Layout from "../../components/main/Layout";
 
 export default function Bounties() {
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const categoriesQuery = trpc.category.list.useQuery();
+  const bountiesQuery = trpc.bounty.list.useInfiniteQuery(
+    {
+      limit: 10,
+      category: categoryFilter,
+    },
+    {
+      getNextPageParam(lastPage: any) {
+        return lastPage?.nextCursor;
+      },
+      getPreviousPageParam: (firstPage, pages) => firstPage.prevCursor,
+    }
+  );
+
   return (
     <Layout>
       <main>
@@ -13,7 +30,12 @@ export default function Bounties() {
             <span className="block text-indigo-600 xl:inline">right now</span>
           </h1>
         </div>
-        <BountyList />
+        <BountyList
+          bountiesQuery={bountiesQuery}
+          setCategoryFilter={setCategoryFilter}
+          categoryFilter={categoryFilter}
+          categories={categoriesQuery.data}
+        />
       </main>
     </Layout>
   );

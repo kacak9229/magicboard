@@ -1,14 +1,15 @@
 import { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Popover, Transition, Menu } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
-const navigation = [
-  { name: "Explore Bounties", href: "/bounties" },
-  { name: "Hunt with Magicboard", href: "/hunter-signup" },
-];
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export default function HeroSection() {
+  const { data: session } = useSession();
   return (
     <div className="relative overflow-hidden bg-gray-50">
       <div
@@ -109,24 +110,119 @@ export default function HeroSection() {
                 </div>
               </div>
               <div className="hidden md:flex md:space-x-10">
-                {navigation.map((item) => (
+                <a
+                  href="/bounties"
+                  className="font-medium text-gray-500 hover:text-gray-900"
+                >
+                  Explore Bounties
+                </a>
+                {session?.user?.hunterId ? (
                   <a
-                    key={item.name}
-                    href={item.href}
+                    href="/hunter-dashboard"
                     className="font-medium text-gray-500 hover:text-gray-900"
                   >
-                    {item.name}
+                    Hunter Dashboard
                   </a>
-                ))}
+                ) : (
+                  <a
+                    href="/hunter-signup"
+                    className="font-medium text-gray-500 hover:text-gray-900"
+                  >
+                    Hunt with Magicboard
+                  </a>
+                )}
               </div>
               <div className="hidden md:absolute md:inset-y-0 md:right-0 md:flex md:items-center md:justify-end">
-                <span className="inline-flex rounded-md shadow">
-                  <Link href="sign-in">
-                    <a className="inline-flex items-center rounded-md border border-transparent bg-white px-4 py-2 text-base font-medium text-indigo-600 hover:bg-gray-50">
-                      Sign in
-                    </a>
-                  </Link>
-                </span>
+                {session ? (
+                  <>
+                    <div className="flex-shrink-0">
+                      <Link href="/bounties/new">
+                        <a className="relative inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                          <PlusIcon
+                            className="-ml-1 mr-2 h-5 w-5"
+                            aria-hidden="true"
+                          />
+                          <span>Post a Bounty</span>
+                        </a>
+                      </Link>
+                    </div>
+
+                    <Menu as="div" className="relative ml-3">
+                      <div>
+                        <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                          <span className="sr-only">Open user menu</span>
+                          <img
+                            className="h-8 w-8 rounded-full"
+                            src={session.user?.image!}
+                            alt=""
+                          />
+                        </Menu.Button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-200"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link href="/poster-dashboard">
+                                <a
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Poster dashboard
+                                </a>
+                              </Link>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link href="/profile">
+                                <a
+                                  className={classNames(
+                                    active ? "bg-gray-100" : "",
+                                    "block px-4 py-2 text-sm text-gray-700"
+                                  )}
+                                >
+                                  Your Profile
+                                </a>
+                              </Link>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <a
+                                href="#"
+                                onClick={() => signOut()}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Sign out
+                              </a>
+                            )}
+                          </Menu.Item>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </>
+                ) : (
+                  <span className="inline-flex rounded-md shadow">
+                    <Link href="sign-in">
+                      <a className="inline-flex items-center rounded-md border border-transparent bg-white px-4 py-2 text-base font-medium text-indigo-600 hover:bg-gray-50">
+                        Sign in
+                      </a>
+                    </Link>
+                  </span>
+                )}
               </div>
             </nav>
           </div>
@@ -161,15 +257,27 @@ export default function HeroSection() {
                   </div>
                 </div>
                 <div className="px-2 pt-2 pb-3">
-                  {navigation.map((item) => (
+                  <a
+                    href="/bounties"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                  >
+                    Explore Bounties
+                  </a>
+                  {session?.user?.hunterId ? (
                     <a
-                      key={item.name}
-                      href={item.href}
+                      href="/hunter-dashboard"
                       className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                     >
-                      {item.name}
+                      Hunter Dashboard
                     </a>
-                  ))}
+                  ) : (
+                    <a
+                      href="/hunter-signup"
+                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                    >
+                      Hunt with Magicboard
+                    </a>
+                  )}
                 </div>
                 <a
                   href="#"

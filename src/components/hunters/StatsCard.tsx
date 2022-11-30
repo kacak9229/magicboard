@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ScaleIcon } from "@heroicons/react/20/solid";
+import { CurrencyDollarIcon, TrophyIcon } from "@heroicons/react/20/solid";
 
 interface Props {
   cards: any;
@@ -7,18 +7,17 @@ interface Props {
 
 const cards = [
   {
-    name: "Payment",
-    href: "/hunter-dashboard/payment",
-    icon: ScaleIcon,
+    name: "Earning",
+    href: "/hunter-dashboard/earnings",
+    icon: CurrencyDollarIcon,
     amount: "$30,659.45",
   },
-  {
-    name: "Total Bounties Won",
-    href: "/hunter-dashboard/bounties/won",
-    icon: ScaleIcon,
-    amount: "20",
-  },
-  // More items...
+  // {
+  //   name: "Total Bounties Won",
+  //   href: "/hunter-dashboard/bounties/won",
+  //   icon: TrophyIcon,
+  //   amount: "20",
+  // },
 ];
 
 export default function StatsCard() {
