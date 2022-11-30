@@ -150,7 +150,7 @@ export default function HeroSection() {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
-                            src={session.user?.image!}
+                            src={String(session.user?.image)}
                             alt=""
                           />
                         </Menu.Button>
@@ -254,26 +254,23 @@ export default function HeroSection() {
                   </div>
                 </div>
                 <div className="px-2 pt-2 pb-3">
-                  <a
-                    href="/bounties"
-                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                  >
-                    Explore Bounties
-                  </a>
+                  <Link href="/bounties">
+                    <a className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900">
+                      Explore Bounties
+                    </a>
+                  </Link>
                   {session?.user?.hunterId ? (
-                    <a
-                      href="/hunter-dashboard"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                    >
-                      Hunter Dashboard
-                    </a>
+                    <Link href="/hunter-dashboard">
+                      <a className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900">
+                        Hunter Dashboard
+                      </a>
+                    </Link>
                   ) : (
-                    <a
-                      href="/hunter-signup"
-                      className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                    >
-                      Hunt with Magicboard
-                    </a>
+                    <Link href="/hunter-signup">
+                      <a className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900">
+                        Hunt with Magicboard
+                      </a>
+                    </Link>
                   )}
                 </div>
                 <a

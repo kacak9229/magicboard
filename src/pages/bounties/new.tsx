@@ -31,7 +31,7 @@ export default function NewBounty() {
   const [startDate, setStartDate] = useState(new Date());
   const [coverPhoto, setCoverPhoto] = useState("");
   const { register, handleSubmit } = useForm();
-  let { uploadToS3 } = useS3Upload();
+  const { uploadToS3 } = useS3Upload();
 
   const addBounty = trpc.bounty.add.useMutation();
   const categoriesQuery = trpc.category.list.useQuery();
@@ -48,10 +48,10 @@ export default function NewBounty() {
 
   const handleFileChange = async (e: any) => {
     setImageProcessing(true);
-    let file = e.target.files[0];
+    const file = e.target.files[0];
 
     try {
-      let { url } = await uploadToS3(file);
+      const { url } = await uploadToS3(file);
 
       setCoverPhoto(url);
       setImageProcessing(false);
