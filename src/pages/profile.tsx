@@ -1,6 +1,8 @@
+import { useSession } from "next-auth/react";
 import Layout from "../components/main/Layout";
 
 export default function Profile() {
+  const { data: session } = useSession();
   return (
     <Layout>
       <div className="flex-1 xl:overflow-y-auto">
@@ -16,8 +18,7 @@ export default function Profile() {
                   Profile
                 </h2>
                 <p className="text-blue-gray-500 mt-1 text-sm">
-                  This information will be displayed publicly so be careful what
-                  you share.
+                  Update your information
                 </p>
               </div>
 
@@ -34,6 +35,7 @@ export default function Profile() {
                   id="first-name"
                   autoComplete="given-name"
                   className="border-blue-gray-300 text-blue-gray-900 mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  placeholder={String(session?.user?.name)}
                 />
               </div>
 

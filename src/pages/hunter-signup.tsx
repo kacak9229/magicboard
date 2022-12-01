@@ -171,27 +171,11 @@ export default function HunterSignup({ getSessionv1 }: any) {
               <div className="lg:grid lg:grid-cols-12 lg:gap-8">
                 <div className="px-4 sm:px-6 sm:text-center md:mx-auto md:max-w-2xl lg:col-span-6 lg:flex lg:items-center lg:text-left">
                   <div>
-                    <a
-                      href="#"
-                      className="inline-flex items-center rounded-full bg-gray-900 p-1 pr-2 text-white hover:text-gray-200 sm:text-base lg:text-sm xl:text-base"
-                    >
-                      <span className="rounded-full bg-indigo-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white">
-                        We are hiring
-                      </span>
-                      <span className="ml-4 text-sm">
-                        Visit our careers page
-                      </span>
-                      <ChevronRightIcon
-                        className="ml-2 h-5 w-5 text-gray-500"
-                        aria-hidden="true"
-                      />
-                    </a>
                     <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
                       Signup as a Hunter
                     </h1>
                     <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                      Enter the information so that you can start hunting
-                      bounties
+                      Start hunting bounties by entering the information.
                     </p>
                     <p className="mt-8 text-base font-semibold text-white sm:mt-10">
                       Used by

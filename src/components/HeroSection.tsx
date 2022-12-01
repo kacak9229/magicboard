@@ -287,14 +287,14 @@ export default function HeroSection() {
         <main className="max-w-7xlpx-4 mx-auto mt-16 sm:mt-24">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-              <span className="block xl:inline">Hunt a bounty and</span>{" "}
+              <span className="block xl:inline">Hunt bounties and</span>{" "}
               <span className="block text-indigo-600 xl:inline">
                 earn money
               </span>
             </h1>
             <p className="mx-auto mt-3 max-w-md text-base text-gray-500 sm:text-lg md:mt-5 md:max-w-3xl md:text-xl">
-              Join a bounty hunting marketplace, where you can work on things
-              that you are passionate about and earn extra money
+              Join a bounty hunting marketplace and do things you love for
+              money.
             </p>
             <div className="mx-auto mt-5 max-w-md sm:flex sm:justify-center md:mt-8">
               <div className="rounded-md shadow">
