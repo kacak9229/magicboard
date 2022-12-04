@@ -211,8 +211,8 @@ export default function TermsOfService() {
             </p>
             <h2>Liability</h2>
             <p>
-              Our website and the materials on our website are provided on an
-              'as is' basis. To the extent permitted by law, Magicboard makes no
+              Our website and the materials on our website are provided on an as
+              is basis. To the extent permitted by law, Magicboard makes no
               warranties, expressed or implied, and hereby disclaims and negates
               all other warranties including, without limitation, implied
               warranties or conditions of merchantability, fitness for a

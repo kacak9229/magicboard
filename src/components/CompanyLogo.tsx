@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function CompanyLogo() {
   return (
     <div className="bg-white">
@@ -13,12 +15,11 @@ export default function CompanyLogo() {
             </p>
             <div className="mt-8 sm:flex">
               <div className="rounded-md shadow">
-                <a
-                  href="/sign-in"
-                  className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
-                >
-                  Create Account
-                </a>
+                <Link href="/sign-in">
+                  <a className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700">
+                    Create Account
+                  </a>
+                </Link>
               </div>
               {/* <div className="mt-3 sm:mt-0 sm:ml-3">
                 <a
