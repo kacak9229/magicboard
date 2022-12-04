@@ -1,5 +1,5 @@
 import { router, publicProcedure } from "../trpc";
-import { Prisma, PaymentStatus } from "@prisma/client";
+import { PaymentStatus } from "@prisma/client";
 import { prisma } from "../../db/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";

@@ -8,6 +8,7 @@ import { formatDate } from "../../../../utils/date";
 import StatusBadge from "../../../../components/StatusBadge";
 import Skeleton from "../../../../components/main/Skeleton";
 import ErrorPage from "../../../../components/main/404";
+import { BountyStatus } from "@prisma/client";
 
 export default function Bounty() {
   const { data: session } = useSession();
@@ -25,6 +26,8 @@ export default function Bounty() {
   const isHunter = mission?.hunterId === session?.user?.hunterId;
 
   const isPoster = mission?.bounty?.userId === session?.user?.id;
+
+  const isBountyDone = mission?.bounty?.bountyStatus === BountyStatus.COMPLETED;
 
   const onAcceptBounty = async () => {
     const acceptedBounty = await acceptBounty.mutateAsync({
@@ -96,6 +99,7 @@ export default function Bounty() {
             </div>
             <div className="mt-20">
               <Timeline
+                isBountyDone={isBountyDone}
                 files={mission?.file}
                 mission={mission}
                 hunterName={String(mission?.hunter?.user?.name)}

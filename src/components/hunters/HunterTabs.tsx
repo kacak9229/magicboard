@@ -14,14 +14,14 @@ export default function Tabs({ mission }: Props) {
   const categories = [
     {
       id: 1,
-      tabName: "Activity",
-      tabContent: <Activity />,
-    },
-    {
-      id: 2,
       tabName: "Requirement",
       tabContent: <Requirement requirement={mission?.bounty?.requirement} />,
     },
+    // { TODO: Add stream chat next week
+    //   id: 2,
+    //   tabName: "Activity",
+    //   tabContent: <Activity disabled={true} />,
+    // },
   ];
 
   return (

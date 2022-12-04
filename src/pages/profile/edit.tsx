@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import Layout from "../components/main/Layout";
+import Layout from "../../components/main/Layout";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -10,7 +10,6 @@ export default function Profile() {
           <h1 className="text-blue-gray-900 text-3xl font-bold tracking-tight">
             Account
           </h1>
-
           <form className="divide-y-blue-gray-200 mt-6 space-y-8 divide-y">
             <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-6 sm:gap-x-6">
               <div className="sm:col-span-6">

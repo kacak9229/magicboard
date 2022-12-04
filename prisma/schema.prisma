@@ -122,7 +122,7 @@ model Hunter {
 model Mission {
   id    String    @id @default(cuid())
   bounty Bounty? @relation(fields: [bountyId], references: [id], onDelete: Cascade)
-  bountyId  String? @unique
+  bountyId  String?
   hunter Hunter? @relation(fields: [hunterId], references: [id], onDelete: Cascade)
   hunterId  String?
   missionStatus MissionStatus @default(IN_PROGRESS)

@@ -10,6 +10,7 @@ import StatusBadge from "../../components/StatusBadge";
 import SuccessAlert from "../../components/SuccessAlert";
 import ErrorPage from "../../components/main/404";
 import Skeleton from "../../components/main/Skeleton";
+import { BountyStatus } from "@prisma/client";
 
 export default function Bounty() {
   const { data: session } = useSession();
@@ -21,21 +22,23 @@ export default function Bounty() {
   const [showAlert, setShowAlert] = useState(false);
 
   const missionQuery = trpc.hunter?.byMission.useQuery({
-    hunterId: session?.user?.hunterId,
+    hunterId: hunterId,
     bountyId: String(id),
   });
 
   const { data: mission, isLoading, isError } = missionQuery;
 
   const fileQuery = trpc.hunter?.byFiles.useQuery({
-    hunterId: session?.user?.hunterId,
+    hunterId: hunterId,
     missionId: String(mission?.id),
   });
   const { data: files } = fileQuery;
 
-  const isHunter = mission?.hunterId === session?.user?.hunterId;
+  const isHunter = mission?.hunterId === hunterId;
 
   const isPoster = mission?.bounty?.userId === session?.user?.id;
+
+  const isBountyDone = mission?.bounty?.bountyStatus === BountyStatus.COMPLETED;
 
   if (isError) {
     return <ErrorPage />;
@@ -95,6 +98,7 @@ export default function Bounty() {
             </div>
             <div className="mt-20">
               <Timeline
+                isBountyDone={isBountyDone}
                 setShowAlert={setShowAlert}
                 processing={processing}
                 setProcessing={setProcessing}

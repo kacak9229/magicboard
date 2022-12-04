@@ -24,7 +24,7 @@ export default function HunterDashboard() {
 
   return (
     <Layout>
-      <StatsCard />
+      {/* <StatsCard /> */}
       {bountiesQuery?.data ? (
         <BountiesTable bountiesQuery={bountiesQuery} />
       ) : (

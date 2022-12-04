@@ -3,6 +3,7 @@ import { prisma } from "../../db/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { BountyStatus, MissionStatus } from "@prisma/client";
+import { sendEmail, EmailType } from "../../../utils/mail";
 
 export const posterBountyRouter = router({
   list: protectedProcedure
@@ -167,6 +168,42 @@ export const posterBountyRouter = router({
           code: "NOT_FOUND",
           message: `Some issues with accepting bounty`,
         });
+      }
+
+      //TODO: can optimize further by using rabbit mq or redis in the future
+      const missions = await prisma.mission.findMany({
+        where: {
+          bountyId: bountyId,
+        },
+        include: { hunter: { include: { user: true } }, bounty: true },
+      });
+
+      for (let i = 0; i < missions.length; i++) {
+        const mission = missions[i];
+        const bountyTitle = mission?.bounty?.title;
+        const hunterEmail = String(mission?.hunter?.user?.email);
+        const username = String(mission?.hunter?.user?.name);
+        const bountyLink = `${process.env.NEXTAUTH_URL!}/hunter-dashboard/${
+          mission?.id
+        }`;
+
+        if (mission?.missionStatus === MissionStatus.ACCEPTED) {
+          sendEmail(
+            bountyTitle,
+            username,
+            hunterEmail,
+            EmailType.ACCEPTED,
+            bountyLink
+          );
+        } else if (mission?.missionStatus === MissionStatus.DECLINED) {
+          sendEmail(
+            bountyTitle,
+            username,
+            hunterEmail,
+            EmailType.DECLINED,
+            bountyLink
+          );
+        }
       }
 
       return {

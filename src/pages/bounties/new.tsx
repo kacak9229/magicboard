@@ -9,7 +9,7 @@ import { useS3Upload } from "next-s3-upload";
 import { trpc } from "../../utils/trpc";
 import { inferProcedureInput } from "@trpc/server";
 import { AppRouter } from "../../server/trpc/router/_app";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Router from "next/router";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,6 +19,23 @@ const StyledRichTextEditor = styled(RichTextEditor)`
     z-index: 0;
   }
 `;
+
+export async function getServerSideProps(context: any) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/sign-in",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { getSessionv1: session },
+  };
+}
 
 export default function NewBounty() {
   // const utils = trpc.useContext();

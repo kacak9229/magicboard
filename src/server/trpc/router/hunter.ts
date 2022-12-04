@@ -3,6 +3,7 @@ import { MissionStatus, Prisma } from "@prisma/client";
 import { prisma } from "../../db/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { EmailType, sendEmail } from "../../../utils/mail";
 
 export const hunterRouter = router({
   list: protectedProcedure
@@ -155,6 +156,9 @@ export const hunterRouter = router({
             },
           },
         },
+        include: {
+          user: true,
+        },
       });
 
       if (!updateBounty) {
@@ -163,6 +167,28 @@ export const hunterRouter = router({
           message: `Cant create mission with '${bountyId}'`,
         });
       }
+
+      const foundHunter = await prisma.hunter.findUnique({
+        where: {
+          id: hunterId!,
+        },
+        include: {
+          user: true,
+        },
+      });
+
+      const bountyLink = `${process.env.NEXTAUTH_URL!}/poster-dashboard/${
+        updateBounty?.id
+      }/hunter/${foundHunter?.id}`;
+
+      sendEmail(
+        updateBounty.title,
+        String(updateBounty.user?.name),
+        String(updateBounty.user?.email),
+        EmailType.JOIN_BOUNTY,
+        String(foundHunter?.user?.name),
+        bountyLink
+      );
 
       return {
         status: true,
@@ -186,10 +212,9 @@ export const hunterRouter = router({
         });
       }
 
-      const mission = await prisma.mission.findFirst({
+      const mission = await prisma.mission.findUnique({
         where: {
-          bountyId: bountyId!,
-          hunterId: hunterId!,
+          id: bountyId!,
         },
         include: {
           bounty: {
@@ -272,6 +297,31 @@ export const hunterRouter = router({
             code: "NOT_FOUND",
             message: `Cant upload file`,
           });
+        }
+
+        const mission = await prisma.mission.findUnique({
+          where: {
+            id: missionId!,
+          },
+          include: {
+            bounty: { include: { user: true } },
+            hunter: { include: { user: true } },
+          },
+        });
+
+        const bountyLink = `${process.env.NEXTAUTH_URL!}/poster-dashboard/${
+          mission?.bounty?.id
+        }/hunter/${mission?.hunter?.id}`;
+
+        if (mission?.missionStatus === MissionStatus.DELIVERED) {
+          sendEmail(
+            mission?.bounty?.title,
+            String(mission.bounty?.user?.name),
+            String(mission?.bounty?.user?.email),
+            EmailType.DELIVERY,
+            String(mission?.hunter?.user?.name),
+            bountyLink
+          );
         }
 
         return {

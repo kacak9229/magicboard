@@ -31,7 +31,11 @@ const comments = [
   },
 ];
 
-export default function Activity() {
+interface Props {
+  disabled?: boolean;
+}
+
+export default function Activity({ disabled }: Props) {
   return (
     <section aria-labelledby="notes-title">
       <div className="bg-white shadow sm:overflow-hidden sm:rounded-lg">

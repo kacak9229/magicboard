@@ -14,20 +14,20 @@ export default function CompanyLogo() {
             <div className="mt-8 sm:flex">
               <div className="rounded-md shadow">
                 <a
-                  href="/sign-up"
+                  href="/sign-in"
                   className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700"
                 >
                   Create Account
                 </a>
               </div>
-              <div className="mt-3 sm:mt-0 sm:ml-3">
+              {/* <div className="mt-3 sm:mt-0 sm:ml-3">
                 <a
                   href="/contact-us"
                   className="flex items-center justify-center rounded-md border border-transparent bg-indigo-100 px-5 py-3 text-base font-medium text-indigo-700 hover:bg-indigo-200"
                 >
                   Contact Us
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="mt-8 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:mt-0 lg:grid-cols-2">

@@ -6,6 +6,7 @@ import { bountyRouter } from "./bounty";
 import { categoryRouter } from "./category";
 import { hunterRouter } from "./hunter";
 import { posterBountyRouter } from "./poster-bounty";
+import { userRouter } from "./user";
 
 export const appRouter = router({
   example: exampleRouter,
@@ -14,6 +15,7 @@ export const appRouter = router({
   hunter: hunterRouter,
   category: categoryRouter,
   posterBounty: posterBountyRouter,
+  user: userRouter,
 });
 
 // export type definition of API

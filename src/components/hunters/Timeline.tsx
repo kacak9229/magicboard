@@ -33,6 +33,7 @@ const timeline = [
 ];
 
 interface Props {
+  isBountyDone?: boolean;
   setShowAlert?: any;
   processing?: any;
   setProcessing?: any;
@@ -46,6 +47,7 @@ interface Props {
 }
 
 export default function Timeline({
+  isBountyDone,
   setShowAlert,
   processing,
   setProcessing,
@@ -167,7 +169,9 @@ export default function Timeline({
 
         <div className="justify-stretch mt-6 flex flex-col">
           {" "}
-          {isPoster ? (
+          {isBountyDone ? (
+            <></>
+          ) : isPoster ? (
             <button
               onClick={() => setModal(true)}
               type="button"
