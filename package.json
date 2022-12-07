@@ -10,9 +10,6 @@
     "start": "next start",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
-  "prisma": {
-    "seed": "ts-node prisma/seed.ts"
-  },
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
