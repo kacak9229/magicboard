@@ -193,7 +193,6 @@ export default function Profile() {
                         {...register("githubLink")}
                         id="mobile-or-email"
                         placeholder={String(user?.hunter.githubLink)}
-                        disabled
                         className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
                     </div>

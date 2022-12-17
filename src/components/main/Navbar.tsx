@@ -33,18 +33,14 @@ export default function Navbar() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-shrink-0 items-center">
+                <div className="mt-3 flex flex-shrink-0 items-center">
                   <Link href="/">
                     <a>
-                      <img
-                        className="block h-8 w-auto lg:hidden"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
-                      />
-                      <img
-                        className="hidden h-8 w-auto lg:block"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="Your Company"
+                      <Image
+                        src="/svg/logo.svg"
+                        alt="me"
+                        width="130"
+                        height="130"
                       />
                     </a>
                   </Link>

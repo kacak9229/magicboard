@@ -8,7 +8,7 @@ export default function Bounties() {
   const categoriesQuery = trpc.category.list.useQuery();
   const bountiesQuery = trpc.bounty.list.useInfiniteQuery(
     {
-      limit: 10,
+      limit: 12,
       category: categoryFilter,
     },
     {

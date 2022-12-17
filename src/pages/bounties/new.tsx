@@ -48,16 +48,23 @@ export default function NewBounty() {
   const [startDate, setStartDate] = useState(new Date());
   const [coverPhoto, setCoverPhoto] = useState("");
   const { register, handleSubmit } = useForm();
-  const { uploadToS3 } = useS3Upload();
+  const { uploadToS3 } = useS3Upload({ endpoint: "/api/photos-bucket" });
 
   const addBounty = trpc.bounty.add.useMutation();
   const categoriesQuery = trpc.category.list.useQuery();
 
+  // This is for rich text editor
   const handleImageUpload = useCallback(
     (file: File): Promise<string> =>
       new Promise((resolve, reject) => {
         uploadToS3(file)
-          .then((result) => resolve(result.url))
+          .then((result) => {
+            const completeURL = result.url.replace(
+              "https://magicboard-bounty-cover-photo.s3.us-east-1.amazonaws.com/",
+              "https://dwq1wt0bhhx6n.cloudfront.net/"
+            );
+            resolve(completeURL);
+          })
           .catch(() => reject(new Error("Upload failed")));
       }),
     []
@@ -70,7 +77,12 @@ export default function NewBounty() {
     try {
       const { url } = await uploadToS3(file);
 
-      setCoverPhoto(url);
+      const completeURL = url.replace(
+        "https://magicboard-bounty-cover-photo.s3.us-east-1.amazonaws.com/",
+        "https://dwq1wt0bhhx6n.cloudfront.net/"
+      );
+
+      setCoverPhoto(completeURL);
       setImageProcessing(false);
     } catch (err) {
       setImageProcessing(false);

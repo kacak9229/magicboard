@@ -14,7 +14,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-function CreatedBy({ createdAt, user }: any) {
+function CreatedBy({ user }: any) {
   return (
     <div key={user?.id} className="flex space-x-1 text-sm text-gray-500">
       <div className="flex-none py-2">
@@ -25,8 +25,7 @@ function CreatedBy({ createdAt, user }: any) {
         />
       </div>
       <div className="flex-1 py-2">
-        <h3 className="font-medium text-gray-900">{user?.name}</h3>
-        <p>{formatDate(createdAt)}</p>
+        <h3 className="mt-3 font-medium text-gray-600">{user?.name}</h3>
       </div>
     </div>
   );
@@ -90,7 +89,7 @@ export default function Bounty() {
 
             {/* Product details */}
             <div className="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:row-span-2 lg:row-end-2 lg:mt-0 lg:max-w-none">
-              <CreatedBy createdAt={bounty?.createdAt} user={bounty?.user} />
+              <CreatedBy user={bounty?.user} />
               <div className="flex flex-col-reverse">
                 <div className="mt-4">
                   <div className="grid grid-cols-6 gap-4">

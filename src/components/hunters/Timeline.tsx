@@ -63,7 +63,7 @@ export default function Timeline({
 
   const utils = trpc.useContext();
 
-  const { uploadToS3 } = useS3Upload();
+  const { uploadToS3 } = useS3Upload({ endpoint: "/api/files-bucket" });
 
   const uploadFile = trpc.hunter.uploadFile.useMutation({
     async onSuccess() {
@@ -82,11 +82,16 @@ export default function Timeline({
     try {
       const { url } = await uploadToS3(file);
 
+      const completeURL = url.replace(
+        "https://magicboard-cloudfront-v1.s3.us-east-1.amazonaws.com/",
+        "https://d715xmgfzhry2.cloudfront.net/"
+      );
+
       const response = await uploadFile.mutateAsync({
         missionId: mission.id,
         hunterId: hunterId,
         fileName: file.name,
-        fileUrl: url,
+        fileUrl: completeURL,
       });
 
       if (response?.status) {
@@ -95,10 +100,14 @@ export default function Timeline({
         setTimeout(() => {
           setShowAlert(false);
         }, 5000);
+
+        e.target.value = null;
       }
     } catch (err) {
       setProcessing(false);
       console.log(err);
+
+      e.target.value = null;
     }
   };
 
