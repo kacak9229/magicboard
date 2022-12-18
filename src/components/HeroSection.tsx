@@ -210,12 +210,11 @@ export default function HeroSection() {
                     </Link>
                   )}
                 </div>
-                <a
-                  href="#"
-                  className="block w-full bg-gray-50 px-5 py-3 text-center font-medium text-indigo-600 hover:bg-gray-100"
-                >
-                  Log in
-                </a>
+                <Link href="/sign-in">
+                  <a className="block w-full bg-gray-50 px-5 py-3 text-center font-medium text-indigo-600 hover:bg-gray-100">
+                    Sign in
+                  </a>
+                </Link>
               </div>
             </Popover.Panel>
           </Transition>
