@@ -13,6 +13,7 @@ import { getSession, useSession } from "next-auth/react";
 import Router from "next/router";
 
 import "react-datepicker/dist/react-datepicker.css";
+import WarningAlert from "../../components/WarningAlert";
 
 const StyledRichTextEditor = styled(RichTextEditor)`
   & .mantine-RichTextEditor-toolbar {
@@ -39,6 +40,8 @@ export async function getServerSideProps(context: any) {
 
 export default function NewBounty() {
   // const utils = trpc.useContext();
+  const [message, setMessage] = useState("");
+  const [alert, setAlert] = useState(false);
   const { data: session } = useSession();
   const [processing, setProcessing] = useState(false);
   const [imageProcessing, setImageProcessing] = useState(false);
@@ -94,18 +97,26 @@ export default function NewBounty() {
     setProcessing(true);
     type Input = inferProcedureInput<AppRouter["bounty"]["add"]>;
 
-    const input: Input = {
-      title: data.title,
-      dateline: startDate,
-      price: Number(data.price),
-      requirement: richTextValue,
-      categoryId: data.category,
-      coverPhoto: coverPhoto,
-      maxHunters: Number(data.maxHunters),
-      userId: session?.user?.id,
-    };
+    if (!coverPhoto) {
+      setMessage("Upload a cover photo");
+      setAlert(true);
+      setProcessing(false);
+
+      return;
+    }
 
     try {
+      const input: Input = {
+        title: data.title,
+        dateline: startDate,
+        price: Number(data.price),
+        requirement: richTextValue,
+        categoryId: data.category,
+        coverPhoto: coverPhoto,
+        maxHunters: Number(data.maxHunters),
+        userId: session?.user?.id,
+      };
+
       const newBounty = await addBounty.mutateAsync(input);
 
       if (newBounty) {
@@ -128,9 +139,10 @@ export default function NewBounty() {
           </h1>
         </div>
         <div className="mx-auto max-w-3xl py-10 px-4 sm:px-6 lg:py-12 lg:px-8">
+          {alert ? <WarningAlert message={message} /> : <></>}
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="space-y-8 divide-y divide-gray-200"
+            className="mt-3 space-y-8 divide-y divide-gray-200"
           >
             <div className="space-y-8 divide-y divide-gray-200">
               <div>

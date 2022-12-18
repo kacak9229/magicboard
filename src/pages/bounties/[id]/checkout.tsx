@@ -76,10 +76,14 @@ export default function Checkout() {
               <button
                 onClick={() => {
                   setProcessing(true);
-                  fetch("http://localhost:3000/api/create-checkout-session", {
-                    method: "POST",
-                    body: JSON.stringify({ bounty }),
-                  })
+                  fetch(
+                    `${process.env
+                      .NEXT_PUBLIC_BASE_URL!}/api/create-checkout-session`,
+                    {
+                      method: "POST",
+                      body: JSON.stringify({ bounty }),
+                    }
+                  )
                     .then((res) => res.json())
                     .then((data) => {
                       window.location.href = data.session.url;

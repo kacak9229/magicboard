@@ -260,6 +260,7 @@ export const hunterRouter = router({
   uploadFile: protectedProcedure
     .input(
       z.object({
+        bountyId: z.string().nullish(),
         missionId: z.string().nullish(),
         hunterId: z.string().nullish(),
         fileName: z.string(),
@@ -267,9 +268,21 @@ export const hunterRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      const { missionId, hunterId, fileName, fileUrl } = input;
+      const { bountyId, missionId, hunterId, fileName, fileUrl } = input;
 
       if (hunterId) {
+        const bounty = await prisma.bounty.findUnique({
+          where: { id: bountyId! },
+        });
+        const currentDate = new Date();
+
+        if (bounty?.dateline && currentDate > bounty?.dateline) {
+          return {
+            status: false,
+            message: "You have missed the dateline :(",
+          };
+        }
+
         const completedTransaction = await prisma.$transaction([
           prisma.file.create({
             data: {

@@ -10,6 +10,7 @@ import Modal from "../main/Modal";
 import { trpc } from "../../utils/trpc";
 import { formatDate } from "../../utils/date";
 import SpinningCircle from "../SpinningCircle";
+import WarningAlert from "../WarningAlert";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -60,6 +61,8 @@ export default function Timeline({
   onAcceptBounty,
 }: Props) {
   const [modal, setModal] = useState(false);
+  const [message, setMessage] = useState<string | undefined>("");
+  const [warningAlert, setWarningAlert] = useState(false);
 
   const utils = trpc.useContext();
 
@@ -79,6 +82,16 @@ export default function Timeline({
     setProcessing(true);
     const file = e.target.files[0];
 
+    const currentDate = new Date();
+
+    if (mission?.bounty?.dateline && currentDate > mission?.bounty?.dateline) {
+      setWarningAlert(true);
+      setMessage("You have missed the deadline :(");
+      setProcessing(false);
+
+      return;
+    }
+
     try {
       const { url } = await uploadToS3(file);
 
@@ -88,6 +101,7 @@ export default function Timeline({
       );
 
       const response = await uploadFile.mutateAsync({
+        bountyId: mission?.bounty.id,
         missionId: mission.id,
         hunterId: hunterId,
         fileName: file.name,
@@ -102,6 +116,10 @@ export default function Timeline({
         }, 5000);
 
         e.target.value = null;
+      } else {
+        setWarningAlert(true);
+        setMessage(response?.message);
+        setProcessing(false);
       }
     } catch (err) {
       setProcessing(false);
@@ -120,6 +138,7 @@ export default function Timeline({
         <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
           Timeline
         </h2>
+        {warningAlert ? <WarningAlert message={message!} /> : <></>}
 
         {/* Modal */}
         {modal && !isHunter ? (
